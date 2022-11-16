@@ -60,28 +60,75 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(),
-                  Column(
-                    
-                    children: const [
-                      Text("Hello"),
-                      Text("Dimas Pradiptas"),
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.notifications_none_sharp,
-                      color: blackColor,
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+            child: Column(
+              children: [
+                // PROFILE BAR
+                Row(
+                  children: [
+                    const CircleAvatar(
+                      backgroundColor: primaryColor,
                     ),
-                  ),
-                ],
-              )
-            ],
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Hello",
+                          style: myTextTheme.bodyLarge!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Dimas Pradipta",
+                          style: myTextTheme.bodyLarge!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Expanded(child: Container()),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.notifications_none_sharp,
+                        color: blackColor,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24.0),
+                // SEARCH BAR
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: Form(
+                          child: Container(
+                            height: 50,
+                            decoration:
+                                const BoxDecoration(color: secondaryColor),
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                  prefixIcon: Icon(Icons.search_outlined),
+                                  border: InputBorder.none),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.adjust_outlined),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
