@@ -12,11 +12,9 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-
   // HIT API BY OPENED CATEGORY PAGE
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<ListGenreProvider>(context, listen: false).getList();
@@ -43,12 +41,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
     "assets/action.jpg",
     "assets/action.jpg",
     "assets/action.jpg",
-
   ];
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child: Consumer<ListGenreProvider>(
@@ -123,7 +119,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 child: Text("No Data Found"),
               );
             } else {
-              return Container();
+              return const Center(
+                child: Text("Cannot load Data"),
+              );
             }
           },
         ),

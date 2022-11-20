@@ -22,6 +22,7 @@ class ListGenreProvider extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
+      // ignore: avoid_print
       print(e.toString());
       rethrow;
     }
