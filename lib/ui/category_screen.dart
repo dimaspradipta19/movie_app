@@ -98,7 +98,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                   bottom: 6.0,
                                   right: 10.0,
                                   child: Text(
-                                    // "Adventure",
                                     provider.result[index].name,
                                     style: myTextTheme.headline5!.copyWith(
                                         color: whiteColor,

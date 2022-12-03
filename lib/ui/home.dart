@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_app/data/provider/search_provider.dart';
+import 'package:flutter_movie_app/data/provider/trending_provider.dart';
 import 'package:flutter_movie_app/ui/account_screen.dart';
 import 'package:flutter_movie_app/ui/category_screen.dart';
 import 'package:flutter_movie_app/ui/favorite_screen.dart';
+import 'package:flutter_movie_app/utils/result_state.dart';
 import 'package:flutter_movie_app/utils/styles.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -40,8 +44,7 @@ class _HomeState extends State<Home> {
             label: "Home",
           ),
           BottomNavigationBarItem(
-            // icon: Icon(Icons.category_outlined),
-            icon: FaIcon(FontAwesomeIcons.appStore),
+            icon: Icon(Icons.category_outlined),
             label: "Category",
           ),
           BottomNavigationBarItem(
@@ -71,13 +74,22 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<TrendingProvider>(context, listen: false).getTrendingList();
+    });
+  }
 
   @override
   void dispose() {
     super.dispose();
-    searchController.dispose();
+    _searchController.dispose();
   }
 
   @override
@@ -135,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           decoration:
                               const BoxDecoration(color: secondaryColor),
                           child: TextFormField(
-                            controller: searchController,
+                            controller: _searchController,
                             decoration: const InputDecoration(
                                 prefixIcon: Icon(Icons.search_outlined),
                                 border: InputBorder.none),
@@ -146,7 +158,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Expanded(
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // Provider.of<SearchProvider>(context, listen: false)
+                        //     .getListSearch(_searchController.text);
+                      },
                       icon: const Icon(Icons.adjust_outlined),
                     ),
                   ),
@@ -155,10 +170,36 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 24.0),
               // MAIN CONTENT
               Expanded(
+                child: Consumer<TrendingProvider>(
+                  builder: (context, TrendingProvider providerTrending, _) {
+                    if (providerTrending.state == ResultState.loading) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (providerTrending.state == ResultState.hasData) {
+                      return ListView.builder(
+                        itemCount: providerTrending.result.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Text(providerTrending.result[index].title);
+                        },
+                      );
+                    } else if (providerTrending.state == ResultState.noData) {
+                      return const Center(
+                        child: Text("no Data"),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+              ),
+              Expanded(
                 child: ListView.builder(
-                  itemCount: 1000,
+                  itemCount: 2000,
+                  scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    return const Text("Main Content");
+                    return Text("ABCD");
                   },
                 ),
               ),
