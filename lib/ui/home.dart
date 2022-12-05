@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/data/provider/search_provider.dart';
 import 'package:flutter_movie_app/data/provider/trending_provider.dart';
+import 'package:flutter_movie_app/data/service/trending_service.dart';
 import 'package:flutter_movie_app/ui/account_screen.dart';
 import 'package:flutter_movie_app/ui/category_screen.dart';
 import 'package:flutter_movie_app/ui/favorite_screen.dart';
@@ -79,7 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<TrendingProvider>(context, listen: false).getTrendingList();
@@ -96,113 +96,135 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+        child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // PROFILE BAR
-              Row(
-                children: [
-                  const CircleAvatar(
-                    backgroundColor: primaryColor,
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Hello",
-                        style: myTextTheme.bodyLarge!
-                            .copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Dimas Pradipta",
-                        style: myTextTheme.bodyLarge!
-                            .copyWith(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.notifications_none_sharp,
-                      color: blackColor,
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 12.0, vertical: 12.0),
+                child: Row(
+                  children: [
+                    const CircleAvatar(
+                      backgroundColor: primaryColor,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Hello",
+                          style: myTextTheme.bodyLarge!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Dimas Pradipta",
+                          style: myTextTheme.bodyLarge!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.notifications_none_sharp,
+                        color: blackColor,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 24.0),
               // SEARCH BAR
-              Row(
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: Form(
-                        key: _formKey,
-                        child: Container(
-                          height: 50,
-                          decoration:
-                              const BoxDecoration(color: secondaryColor),
-                          child: TextFormField(
-                            controller: _searchController,
-                            decoration: const InputDecoration(
-                                prefixIcon: Icon(Icons.search_outlined),
-                                border: InputBorder.none),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: Form(
+                          key: _formKey,
+                          child: Container(
+                            height: 50,
+                            decoration:
+                                const BoxDecoration(color: secondaryColor),
+                            child: TextFormField(
+                              controller: _searchController,
+                              decoration: const InputDecoration(
+                                  prefixIcon: Icon(Icons.search_outlined),
+                                  border: InputBorder.none),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: IconButton(
-                      onPressed: () {
-                        // Provider.of<SearchProvider>(context, listen: false)
-                        //     .getListSearch(_searchController.text);
-                      },
-                      icon: const Icon(Icons.adjust_outlined),
+                    Expanded(
+                      child: IconButton(
+                        onPressed: () {
+                          // Provider.of<SearchProvider>(context, listen: false)
+                          //     .getListSearch(_searchController.text);
+                        },
+                        icon: const Icon(Icons.adjust_outlined),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(height: 24.0),
               // MAIN CONTENT
-              Expanded(
-                child: Consumer<TrendingProvider>(
-                  builder: (context, TrendingProvider providerTrending, _) {
-                    if (providerTrending.state == ResultState.loading) {
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 12.0),
+                child: Text("Trending Movie", style: myTextTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold, fontSize: 20.0),),
+              ),
+              SizedBox(
+                height: 520,
+                width: MediaQuery.of(context).size.width,
+                child: FutureBuilder(
+                  future: TrendingService().getListTrending(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
-                    } else if (providerTrending.state == ResultState.hasData) {
+                    } else if (snapshot.hasData) {
                       return ListView.builder(
-                        itemCount: providerTrending.result.length,
+                        shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data?.length,
                         itemBuilder: (context, index) {
-                          return Text(providerTrending.result[index].title);
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(30),
+                              child: Container(
+                                height: double.infinity,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(color: Colors.grey[300]),
+                                child: Image.network(
+                                  "https://image.tmdb.org/t/p/original/${snapshot.data![index].posterPath}",
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ),
+                          );
                         },
                       );
-                    } else if (providerTrending.state == ResultState.noData) {
-                      return const Center(
-                        child: Text("no Data"),
-                      );
                     } else {
-                      return Container();
+                      return const Center(
+                        child: Text("Error"),
+                      );
                     }
                   },
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: 2000,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return Text("ABCD");
-                  },
-                ),
-              ),
+              Container(
+                height: 200,
+                decoration: const BoxDecoration(color: secondaryColor),
+              )
             ],
           ),
         ),

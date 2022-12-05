@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/data/provider/genre_provider.dart';
-import 'package:flutter_movie_app/data/provider/search_provider.dart';
 import 'package:flutter_movie_app/data/provider/trending_provider.dart';
 import 'package:flutter_movie_app/ui/home.dart';
 import 'package:flutter_movie_app/utils/styles.dart';

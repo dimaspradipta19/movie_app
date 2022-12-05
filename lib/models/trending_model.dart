@@ -57,11 +57,11 @@ class Result {
   String backdropPath;
   int id;
   String title;
-  OriginalLanguage originalLanguage;
+  OriginalLanguage? originalLanguage;
   String originalTitle;
   String overview;
   String posterPath;
-  MediaType mediaType;
+  MediaType? mediaType;
   List<int> genreIds;
   double popularity;
   DateTime releaseDate;
@@ -75,11 +75,11 @@ class Result {
         id: json["id"],
         title: json["title"],
         originalLanguage:
-            originalLanguageValues.map[json["original_language"]]!,
+            originalLanguageValues.map[json["original_language"]],
         originalTitle: json["original_title"],
         overview: json["overview"],
         posterPath: json["poster_path"],
-        mediaType: mediaTypeValues.map[json["media_type"]]!,
+        mediaType: mediaTypeValues.map[json["media_type"]],
         genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
         popularity: json["popularity"].toDouble(),
         releaseDate: DateTime.parse(json["release_date"]),
