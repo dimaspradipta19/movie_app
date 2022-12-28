@@ -19,6 +19,7 @@ class TrendingService {
         throw Exception("Cannot load Data");
       }
     } catch (e) {
+      // ignore: avoid_print
       print(e.toString());
       return null;
     }

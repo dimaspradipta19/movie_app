@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_app/data/provider/detail_movie_provider.dart';
 import 'package:flutter_movie_app/data/provider/genre_provider.dart';
 import 'package:flutter_movie_app/data/provider/trending_provider.dart';
 import 'package:flutter_movie_app/ui/home.dart';
@@ -22,6 +23,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => TrendingProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DetailProvider(),
         ),
         // ChangeNotifierProvider(
         //   create: (context) => SearchProvider(),
