@@ -7,18 +7,21 @@ import '../../utils/result_state.dart';
 class DetailProvider with ChangeNotifier {
   DetailService service = DetailService();
   DetailModel? detailModel;
+  // List<ProductionCompany> resultProd = [];
   ResultState state = ResultState.noData;
 
   void getDetail(String id) async {
     try {
       state = ResultState.loading;
       notifyListeners();
-      detailModel = await service.getDetail(id);
-      if (detailModel == null) {
-        state = ResultState.noData;
+      var result = await service.getDetail(id);
+
+      if (result != null) {
+        state = ResultState.hasData;
+        // detailModel = result;
         notifyListeners();
       } else {
-        state = ResultState.hasData;
+        state = ResultState.noData;
         notifyListeners();
       }
     } catch (e) {

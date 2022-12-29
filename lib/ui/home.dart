@@ -232,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     );
                                     print(
-                                      snapshot.data![index].id.toString(),
+                                      snapshot.data![index].overview,
                                     );
                                   },
                                   child: ClipRRect(
