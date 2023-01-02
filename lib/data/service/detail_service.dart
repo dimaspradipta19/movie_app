@@ -15,9 +15,7 @@ class DetailService {
       );
       if (response.statusCode == 200) {
         Map<String, dynamic> decodedData = jsonDecode(response.body);
-
         var model = DetailModel.fromJson(decodedData);
-
         return model;
       } else {
         throw Exception("Cannot load Data");

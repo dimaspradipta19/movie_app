@@ -231,9 +231,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         },
                                       ),
                                     );
-                                    print(
-                                      snapshot.data![index].overview,
-                                    );
                                   },
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(30),
@@ -301,6 +298,40 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 24.0),
 
               // CONTENT LAIN
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Another Content",
+                      style: myTextTheme.bodyLarge!.copyWith(
+                          fontWeight: FontWeight.bold, fontSize: 20.0),
+                    ),
+                    SizedBox(
+                      height: 100,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView.builder(
+                        itemCount: 3,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Container(
+                              height: 100,
+                              width: 250,
+                              decoration:
+                                  const BoxDecoration(color: primaryColor),
+                              child: Text("data"),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

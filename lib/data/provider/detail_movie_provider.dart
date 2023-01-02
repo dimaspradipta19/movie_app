@@ -13,10 +13,11 @@ class DetailProvider with ChangeNotifier {
   void getDetail(String id) async {
     try {
       state = ResultState.loading;
+      detailModel = await service.getDetail(id);
+      // var result = await service.getDetail(id);
       notifyListeners();
-      var result = await service.getDetail(id);
 
-      if (result != null) {
+      if (detailModel != null) {
         state = ResultState.hasData;
         // detailModel = result;
         notifyListeners();
