@@ -1,12 +1,5 @@
-import 'dart:convert';
-
-TrendingModel trendingModelFromJson(String str) =>
-    TrendingModel.fromJson(json.decode(str));
-
-String trendingModelToJson(TrendingModel data) => json.encode(data.toJson());
-
-class TrendingModel {
-  TrendingModel({
+class TrendingMovieModel {
+  TrendingMovieModel({
     required this.page,
     required this.results,
     required this.totalPages,
@@ -18,7 +11,7 @@ class TrendingModel {
   int totalPages;
   int totalResults;
 
-  factory TrendingModel.fromJson(Map<String, dynamic> json) => TrendingModel(
+  factory TrendingMovieModel.fromJson(Map<String, dynamic> json) => TrendingMovieModel(
         page: json["page"],
         results:
             List<Result>.from(json["results"].map((x) => Result.fromJson(x))),

@@ -7,7 +7,6 @@ import '../../utils/result_state.dart';
 class DetailProvider with ChangeNotifier {
   DetailService service = DetailService();
   DetailModel? detailModel;
-  // List<ProductionCompany> resultProd = [];
   ResultState state = ResultState.noData;
 
   void getDetail(String id) async {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/data/provider/detail_movie_provider.dart';
-import 'package:flutter_movie_app/data/service/detail_service.dart';
+// import 'package:flutter_movie_app/data/service/detail_service.dart';
 import 'package:flutter_movie_app/utils/result_state.dart';
 import 'package:flutter_movie_app/utils/styles.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +17,6 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<DetailProvider>(context, listen: false).getDetail(widget.id);

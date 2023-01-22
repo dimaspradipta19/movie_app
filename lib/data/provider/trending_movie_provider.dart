@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_movie_app/data/service/trending_service.dart';
-import 'package:flutter_movie_app/models/trending_model.dart';
+import 'package:flutter_movie_app/data/service/trending_movie_service.dart';
+import 'package:flutter_movie_app/models/trending_movie_model.dart';
 import 'package:flutter_movie_app/utils/result_state.dart';
 
 class TrendingProvider with ChangeNotifier {
-  TrendingService service = TrendingService();
+  TrendingMovieService service = TrendingMovieService();
   List<Result> result = [];
   ResultState state = ResultState.noData;
 
-  void getTrendingList() async {
+  void getTrendingListMovie() async {
     try {
       state = ResultState.loading;
       notifyListeners();
-      result = await service.getListTrending() ?? [];
+      result = await service.getTrendingMovieList() ?? [];
 
       if (result == []) {
         state = ResultState.noData;

@@ -1,9 +1,3 @@
-import 'dart:convert';
-
-DetailModel detailModelFromJson(String str) => DetailModel.fromJson(json.decode(str));
-
-String detailModelToJson(DetailModel data) => json.encode(data.toJson());
-
 class DetailModel {
     DetailModel({
         required this.adult,

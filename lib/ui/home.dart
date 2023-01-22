@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/data/provider/detail_movie_provider.dart';
-import 'package:flutter_movie_app/data/provider/trending_provider.dart';
-import 'package:flutter_movie_app/data/service/trending_service.dart';
+import 'package:flutter_movie_app/data/provider/trending_movie_provider.dart';
+// import 'package:flutter_movie_app/data/service/detail_service.dart';
+import 'package:flutter_movie_app/data/service/trending_movie_service.dart';
 import 'package:flutter_movie_app/ui/account_screen.dart';
 import 'package:flutter_movie_app/ui/category_screen.dart';
 import 'package:flutter_movie_app/ui/detail_screen.dart';
 import 'package:flutter_movie_app/ui/favorite_screen.dart';
+import 'package:flutter_movie_app/utils/result_state.dart';
 import 'package:flutter_movie_app/utils/styles.dart';
+import 'package:flutter_movie_app/widgets/trending_movie.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/trending_tv_widget.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -75,8 +80,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // TODO: Menambahkan texteditingcontroller
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -84,11 +88,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<TrendingProvider>(context, listen: false).getTrendingList();
+      Provider.of<TrendingProvider>(context, listen: false)
+          .getTrendingListMovie();
     });
   }
 
-  // TODO: Dispose method
   @override
   void dispose() {
     super.dispose();
@@ -156,7 +160,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration:
                                 const BoxDecoration(color: secondaryColor),
                             child: TextFormField(
-                              // TODO: Menambahkan controller
                               controller: _searchController,
                               decoration: const InputDecoration(
                                   prefixIcon: Icon(Icons.search_outlined),
@@ -195,110 +198,36 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.bold, fontSize: 20.0),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 300,
-                    // width: MediaQuery.of(context).size.width,
-                    child: FutureBuilder(
-                      future: TrendingService().getListTrending(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasData) {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: snapshot.data?.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: InkWell(
-                                  onTap: () {
-                                    Provider.of<DetailProvider>(context,
-                                            listen: false)
-                                        .getDetail(snapshot.data![index].id
-                                            .toString());
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return DetailScreen(
-                                            id: snapshot.data![index].id
-                                                .toString(),
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(30),
-                                    child: Container(
-                                      width: 200,
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey[300]),
-                                      child: Image.network(
-                                        "https://image.tmdb.org/t/p/original/${snapshot.data![index].posterPath}",
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        } else {
-                          return const Center(
-                            child: Text("Error"),
-                          );
-                        }
-                      },
-                    ),
+                    child: TrendingMovieWidget(),
                   ),
                 ],
               ),
               const SizedBox(height: 24.0),
 
-              // MOST WATCHED MOVIE
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Most Watched Movie",
+              // Trending Series
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 12.0, right: 12.0, bottom: 12.0),
+                    child: Text(
+                      "Trending Series",
                       style: myTextTheme.bodyLarge!.copyWith(
                           fontWeight: FontWeight.bold, fontSize: 20.0),
                     ),
-                    SizedBox(
-                      height: 100,
-                      width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                        itemCount: 3,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Container(
-                              height: 100,
-                              width: 250,
-                              decoration:
-                                  const BoxDecoration(color: primaryColor),
-                              child: Text("data"),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(
+                    height: 300,
+                    child: TrendingTvWidget(),
+                  ),
+                ],
               ),
-
               const SizedBox(height: 24.0),
 
               // CONTENT LAIN
-
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Column(
@@ -323,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: 250,
                               decoration:
                                   const BoxDecoration(color: primaryColor),
-                              child: Text("data"),
+                              child: const Text("data"),
                             ),
                           );
                         },

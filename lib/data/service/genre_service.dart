@@ -31,12 +31,12 @@ class GenreService {
     */
 
     // USING DIO PACKAGE
-    // DIO gak perlu di decode datanya?
     try {
       final response = await Dio().get(
           "https://api.themoviedb.org/3/genre/movie/list?api_key=4c65dcd30f0b84629a0af3d4802ab464&language=en-US");
 
       if (response.statusCode == 200) {
+        // DIO gak perlu di decode datanya?
         var model = ListGenreModel.fromJson(response.data);
         List<Genre>? result = model.genres;
         return result;
