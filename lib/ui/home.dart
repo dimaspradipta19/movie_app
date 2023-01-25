@@ -9,7 +9,7 @@ import 'package:flutter_movie_app/ui/detail_screen.dart';
 import 'package:flutter_movie_app/ui/favorite_screen.dart';
 import 'package:flutter_movie_app/utils/result_state.dart';
 import 'package:flutter_movie_app/utils/styles.dart';
-import 'package:flutter_movie_app/widgets/trending_movie.dart';
+import 'package:flutter_movie_app/widgets/trending_movie_widget.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<TrendingProvider>(context, listen: false)
+      Provider.of<TrendingMovieProvider>(context, listen: false)
           .getTrendingListMovie();
     });
   }

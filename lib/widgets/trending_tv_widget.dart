@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/data/service/trending_tv_service.dart';
-import 'package:provider/provider.dart';
-
-import '../data/provider/detail_movie_provider.dart';
-import '../ui/detail_screen.dart';
 import '../utils/result_state.dart';
 
 class TrendingTvWidget extends StatelessWidget {

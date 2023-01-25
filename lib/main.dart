@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           create: (context) => ListGenreProvider(),
         ),
         ChangeNotifierProvider(
-          create: (context) => TrendingProvider(),
+          create: (context) => TrendingMovieProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => TrendingTvProvider(),

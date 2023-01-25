@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/data/provider/detail_movie_provider.dart';
-// import 'package:flutter_movie_app/data/service/detail_service.dart';
 import 'package:flutter_movie_app/utils/result_state.dart';
 import 'package:flutter_movie_app/utils/styles.dart';
 import 'package:provider/provider.dart';
@@ -60,8 +59,19 @@ class _DetailScreenState extends State<DetailScreen> {
               ],
             );
           } else if (valueProvider.state == ResultState.noData) {
-            return const Center(
-              child: Text("No Data"),
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Cannot load Data"),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Kembali ke beranda"),
+                  ),
+                ],
+              ),
             );
           }
           return const Center(

@@ -3,16 +3,16 @@ import 'package:flutter_movie_app/data/service/trending_movie_service.dart';
 import 'package:flutter_movie_app/models/trending_movie_model.dart';
 import 'package:flutter_movie_app/utils/result_state.dart';
 
-class TrendingProvider with ChangeNotifier {
+class TrendingMovieProvider with ChangeNotifier {
   TrendingMovieService service = TrendingMovieService();
-  List<Result> result = [];
+  List<Result>? result = [];
   ResultState state = ResultState.noData;
 
   void getTrendingListMovie() async {
     try {
       state = ResultState.loading;
       notifyListeners();
-      result = await service.getTrendingMovieList() ?? [];
+      result = await service.getTrendingMovieList();
 
       if (result == []) {
         state = ResultState.noData;
