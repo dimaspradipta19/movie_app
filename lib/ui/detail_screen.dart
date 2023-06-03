@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/data/provider/detail_movie_provider.dart';
 import 'package:flutter_movie_app/utils/result_state.dart';
@@ -7,7 +8,7 @@ import 'package:provider/provider.dart';
 class DetailScreen extends StatefulWidget {
   const DetailScreen({super.key, required this.id});
 
-  final String id;
+  final int id;
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -30,15 +31,33 @@ class _DetailScreenState extends State<DetailScreen> {
             builder: (context, DetailProvider valueProvider, _) {
           if (valueProvider.state == ResultState.loading) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: Center(child: CircularProgressIndicator.adaptive()),
             );
           } else if (valueProvider.state == ResultState.hasData) {
             return Column(
               children: [
                 Stack(
                   children: [
-                    Image.network(
-                        "https://image.tmdb.org/t/p/original/${valueProvider.detailModel!.backdropPath}"),
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: CachedNetworkImage(
+                            errorWidget: (context, url, error) => const Center(
+                                child: CircularProgressIndicator.adaptive()),
+                            imageUrl:
+                                "https://image.tmdb.org/t/p/original/${valueProvider.detailModel!.backdropPath}",
+                          ),
+                        ),
+                        Text(valueProvider.detailModel?.originalTitle ??
+                            "Kosong"),
+                        ElevatedButton(
+                            onPressed: () {
+                              print("A");
+                            },
+                            child: Text("A"))
+                      ],
+                    ),
                     Container(
                       width: 50,
                       height: 50,
@@ -55,7 +74,6 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                   ],
                 ),
-                Text(valueProvider.detailModel?.originalTitle ?? "Kosong"),
               ],
             );
           } else if (valueProvider.state == ResultState.noData) {
@@ -81,46 +99,4 @@ class _DetailScreenState extends State<DetailScreen> {
       ),
     );
   }
-
-// class _DetailScreenState extends State<DetailScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Detail Movie ${widget.id}"),
-//       ),
-//       body: Column(
-//         children: [
-//           FutureBuilder(
-//             future: DetailService().getDetail(widget.id),
-//             builder: (context, snapshot) {
-//               if (snapshot.connectionState == ConnectionState.waiting) {
-//                 return const Center(child: CircularProgressIndicator());
-//               } else if (snapshot.hasData) {
-//                 return SizedBox(
-//                   height: 100,
-//                   width: 100,
-//                   child: ListView.builder(
-//                     itemBuilder: (context, index) {
-//                       return Column(
-//                         children: [
-//                           Text(snapshot.data!.originalTitle),
-//                           Text(snapshot.data!.overview),
-//                         ],
-//                       );
-//                     },
-//                   ),
-//                 );
-//               } else if (snapshot.hasError) {
-//                 return const Text("Error");
-//               }
-//               return const Center(
-//                 child: Text("Something Wrong"),
-//               );
-//             },
-//           )
-//         ],
-//       ),
-//     );
-//   }
 }

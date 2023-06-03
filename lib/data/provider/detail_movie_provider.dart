@@ -9,16 +9,15 @@ class DetailProvider with ChangeNotifier {
   DetailModel? detailModel;
   ResultState state = ResultState.noData;
 
-  void getDetail(String id) async {
+  void getDetail(int id) async {
     try {
       state = ResultState.loading;
-      detailModel = await service.getDetail(id);
-      // var result = await service.getDetail(id);
       notifyListeners();
+
+      detailModel = await service.getDetail(id);
 
       if (detailModel != null) {
         state = ResultState.hasData;
-        // detailModel = result;
         notifyListeners();
       } else {
         state = ResultState.noData;
@@ -27,7 +26,7 @@ class DetailProvider with ChangeNotifier {
     } catch (e) {
       // ignore: avoid_print
       print(e.toString());
-      rethrow;
+      // rethrow;
     }
   }
 }

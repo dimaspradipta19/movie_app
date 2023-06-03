@@ -198,9 +198,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.bold, fontSize: 20.0),
                     ),
                   ),
-                  const SizedBox(
-                    height: 300,
-                    child: TrendingMovieWidget(),
+                  Consumer<TrendingMovieProvider>(
+                    builder: (context, valueTrendingMovie, child) {
+                      if (valueTrendingMovie.state == ResultState.loading) {
+                        return const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        );
+                      }
+                      if (valueTrendingMovie.state == ResultState.error) {
+                        return const Text("Error no Data");
+                      }
+                      return const SizedBox(
+                        height: 300,
+                        child: TrendingMovieWidget(),
+                      );
+                    },
                   ),
                 ],
               ),
