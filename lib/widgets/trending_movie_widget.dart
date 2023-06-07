@@ -20,7 +20,7 @@ class TrendingMovieWidget extends StatelessWidget {
           return ListView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemCount: valueMovie.result!.length,
+            itemCount: valueMovie.result!.results.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(right: 8.0),
@@ -31,7 +31,7 @@ class TrendingMovieWidget extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) {
                           return DetailScreen(
-                            id: valueMovie.result![index].id,
+                            id: valueMovie.result!.results[index].id,
                           );
                         },
                       ),
@@ -43,7 +43,7 @@ class TrendingMovieWidget extends StatelessWidget {
                       errorWidget: (context, url, error) =>
                           const CircularProgressIndicator.adaptive(),
                       imageUrl:
-                          "https://image.tmdb.org/t/p/original/${valueMovie.result![index].posterPath}",
+                          "https://image.tmdb.org/t/p/original/${valueMovie.result!.results[index].posterPath}",
                       fit: BoxFit.cover,
                     ),
                   ),

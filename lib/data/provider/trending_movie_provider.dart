@@ -5,7 +5,7 @@ import 'package:flutter_movie_app/utils/result_state.dart';
 
 class TrendingMovieProvider with ChangeNotifier {
   TrendingMovieService service = TrendingMovieService();
-  List<Result>? result = [];
+  TrendingMovieModel? result;
   ResultState state = ResultState.noData;
 
   void getTrendingListMovie() async {

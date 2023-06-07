@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/data/provider/detail_movie_provider.dart';
@@ -53,7 +55,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             "Kosong"),
                         ElevatedButton(
                             onPressed: () {
-                              print("A");
+                              log("A");
                             },
                             child: Text("A"))
                       ],
