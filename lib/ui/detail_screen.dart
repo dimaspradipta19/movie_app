@@ -6,6 +6,7 @@ import 'package:flutter_movie_app/data/provider/detail_movie_provider.dart';
 import 'package:flutter_movie_app/utils/result_state.dart';
 import 'package:flutter_movie_app/utils/styles.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class DetailScreen extends StatefulWidget {
   const DetailScreen({super.key, required this.id});
@@ -32,10 +33,24 @@ class _DetailScreenState extends State<DetailScreen> {
         child: Consumer<DetailProvider>(
             builder: (context, DetailProvider valueProvider, _) {
           if (valueProvider.state == ResultState.loading) {
-            return const Center(
-              child: Center(child: CircularProgressIndicator.adaptive()),
+            // return const Center(
+            //   child: Center(child: CircularProgressIndicator.adaptive()),
+            // );
+
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Shimmer.fromColors(
+                baseColor: Colors.grey[200]!,
+                highlightColor: Colors.grey,
+                child: Container(
+                  color: whiteColor,
+                  height: 200,
+                  width: 200,
+                ),
+              ),
             );
-          } else if (valueProvider.state == ResultState.hasData) {
+          }
+          if (valueProvider.state == ResultState.hasData) {
             return Column(
               children: [
                 Stack(
@@ -45,6 +60,17 @@ class _DetailScreenState extends State<DetailScreen> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: CachedNetworkImage(
+                            placeholder: (context, url) {
+                              return Shimmer.fromColors(
+                                baseColor: Colors.grey[200]!,
+                                highlightColor: Colors.grey,
+                                child: Container(
+                                  color: whiteColor,
+                                  height: 200,
+                                  width: 200,
+                                ),
+                              );
+                            },
                             errorWidget: (context, url, error) => const Center(
                                 child: CircularProgressIndicator.adaptive()),
                             imageUrl:
@@ -53,32 +79,43 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                         Text(valueProvider.detailModel?.originalTitle ??
                             "Kosong"),
-                        ElevatedButton(
-                            onPressed: () {
-                              log("A");
-                            },
-                            child: Text("A"))
                       ],
                     ),
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: const BoxDecoration(color: primaryColor),
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(
-                          Icons.arrow_back_ios_new_sharp,
-                          color: secondaryColor,
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back_ios_new_sharp,
+                              color: secondaryColor,
+                              size: 30,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(
+                              Icons.favorite_border,
+                              color: secondaryColor,
+                              size: 30,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ],
             );
-          } else if (valueProvider.state == ResultState.noData) {
+          }
+          if (valueProvider.state == ResultState.noData) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

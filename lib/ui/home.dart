@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_app/data/provider/detail_movie_provider.dart';
 import 'package:flutter_movie_app/data/provider/trending_movie_provider.dart';
-// import 'package:flutter_movie_app/data/service/detail_service.dart';
-import 'package:flutter_movie_app/data/service/trending_movie_service.dart';
+import 'package:flutter_movie_app/data/provider/trending_tv_provider.dart';
 import 'package:flutter_movie_app/ui/account_screen.dart';
 import 'package:flutter_movie_app/ui/category_screen.dart';
-import 'package:flutter_movie_app/ui/detail_screen.dart';
 import 'package:flutter_movie_app/ui/favorite_screen.dart';
 import 'package:flutter_movie_app/utils/result_state.dart';
 import 'package:flutter_movie_app/utils/styles.dart';
@@ -90,6 +87,10 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<TrendingMovieProvider>(context, listen: false)
           .getTrendingListMovie();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<TrendingTvProvider>(context, listen: false)
+          .getTrendingListTv();
     });
   }
 
@@ -231,9 +232,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.bold, fontSize: 20.0),
                     ),
                   ),
-                  const SizedBox(
-                    height: 300,
-                    child: TrendingTvWidget(),
+                  Consumer<TrendingTvProvider>(
+                    builder: (context, valueTrendingTv, child) {
+                      if (valueTrendingTv.state == ResultState.loading) {
+                        return const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        );
+                      }
+                      if (valueTrendingTv.state == ResultState.error) {
+                        return const Text("Error no Data");
+                      }
+                      return const SizedBox(
+                        height: 300,
+                        child: TrendingTvWidget(),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -251,25 +264,25 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.bold, fontSize: 20.0),
                     ),
                     SizedBox(
-                      height: 100,
-                      width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                        itemCount: 3,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Container(
-                              height: 100,
-                              width: 250,
-                              decoration:
-                                  const BoxDecoration(color: primaryColor),
-                              child: const Text("data"),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                        height: 100,
+                        width: MediaQuery.of(context).size.width,
+                        child: ListView.builder(
+                          itemCount: 3,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Container(
+                                height: 100,
+                                width: 250,
+                                decoration:
+                                    const BoxDecoration(color: primaryColor),
+                                child:
+                                    Text("value.result!.results[index].name"),
+                              ),
+                            );
+                          },
+                        )),
                   ],
                 ),
               ),
